@@ -1,14 +1,15 @@
-require("dotenv").config();
-const mongoose = require('mongoose')
-const DB = process.env.DBURL
+const mongoose = require("mongoose");
+require("dotenv").config(); // Load environment variables
 
-const db = async () => {
-    try {
-        await mongoose.connect(DB)
-    } catch (error) {
-        console.error('mongo error')
-    }
-  
+const connectDB = () => {
+  const db = process.env.DBURL; // Access the DB URL from .env
+
+  mongoose.connect(db);
+
+  mongoose.connection
+    .on("open", () => console.log("Connected to Mongoose"))
+    .on("close", () => console.log("Disconnected from Mongoose"))
+    .on("error", (error) => console.log(error));
 };
 
-module.exports = db
+module.exports = connectDB;
